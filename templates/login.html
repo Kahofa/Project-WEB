@@ -4,27 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Signup</title>
-    <link href="login.css" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='css/signup.css') }}" rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="form">
-        <form action="#" class="sub-form">  
+        <form method="post" class="sub-form">
             <div class="upper-form"> 
             <h2>Вход в аккаунт</h2>
                 <label>Логин:</label>
                 <input type="login" name="username"> <br>
                 <label>Пароль:</label>
-                <input type="text" name="password"> <br>
+                <input type="password" name="password"> <br>
                 <div class="btm">
                     <button type="submit">Войти</button> <br>
                 </div>
             </div>
             <div class="bottom-form">
                 <div class="no-account">У вас нет учетной записи? </div>
-                <a href="#" class="signup">Зарегистрироваться</a>
+                <a href="/signup" class="signup">Зарегистрироваться</a>
             </div>
      
         </form>             

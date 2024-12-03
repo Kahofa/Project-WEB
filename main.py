@@ -23,24 +23,27 @@ class Idea(db.Model):
 with app.app_context():
     db.create_all()
 
-
 @app.route('/')
 def index():
+    return redirect(url_for("home"))
+
+@app.route('/home')
+def home():
     if 'user_id' not in session:
         return redirect(url_for('login'))
     all_ideas = Idea.query.all()
-    return render_template('ideas.html', ideas=all_ideas)
+    return render_template('index.html', ideas=all_ideas)
 
 
-@app.route('/register', methods=['GET', 'POST'])
-def register():
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
 
         if User.query.filter_by(username=username).first():
             flash('Пользователь с таким именем уже существует')
-            return redirect(url_for('register'))
+            return redirect(url_for('signup'))
 
         hashed_password = generate_password_hash(password, method='sha256')
         new_user = User(username=username, password=hashed_password)
@@ -49,9 +52,9 @@ def register():
         db.session.commit()
         session['user_id'] = new_user.id
         session['username'] = new_user.username
-        return redirect(url_for(''))
+        return redirect(url_for('home'))
 
-    return render_template('register.html')
+    return render_template('signup.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -98,4 +101,4 @@ def add_idea():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5252)

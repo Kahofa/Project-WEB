@@ -1,7 +1,31 @@
-const input = document.getElementById('input1');
+const input = document.getElementById('inputIdea');
 const createBtn = document.getElementById('create');
 const errorCheck = document.getElementById('errorCheck');
 const serviceGrid = document.querySelector('.service-grid');
+
+create.addEventListener('click', async () => {
+            const ideaText = input.value;
+
+            if (!ideaText.trim()) {
+                alert('Please enter your idea!');
+                return;
+            }
+
+            try {
+                const response = await fetch('/add_idea', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ idea_text: ideaText }),
+                });
+
+                const result = await response.json();
+            } catch (error) {
+                console.error('Error submitting idea:', error);
+                alert('An error occurred while submitting your idea.');
+            }
+        });
 
 function addCard() {
   const inputValue = input.value.trim();
@@ -47,8 +71,8 @@ function addCardToGrid(title){
       </div>
     </div>
   `;
-  
-  serviceGrid.appendChild(newCard); 
+
+  serviceGrid.appendChild(newCard);
 }
 
 serviceGrid.onclick = function (event) {
