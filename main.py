@@ -100,5 +100,19 @@ def add_idea():
     return jsonify({'message': 'Idea added successfully', 'idea_id': new_idea.id})
 
 
+@app.route('/delete_idea/<int:id>', methods=['POST'])
+def delete_idea(id):
+    if 'username' not in session:
+        return jsonify({'error': 'Unauthorized'}), 403
+
+    idea = Idea.query.get(id)
+    if idea and idea.username == session['username']:
+        db.session.delete(idea)
+        db.session.commit()
+        return jsonify({'message': 'Idea deleted successfully'}), 200
+    else:
+        return jsonify({'error': 'Idea not found or unauthorized'}), 404
+
+
 if __name__ == '__main__':
     app.run(debug=True, port=5252)
