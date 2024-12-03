@@ -23,13 +23,16 @@ class Idea(db.Model):
 with app.app_context():
     db.create_all()
 
+
 @app.route('/')
 def index():
     return redirect(url_for("home"))
 
+
 @app.route('/home')
 def home():
-    if 'user_id' not in session:
+    print(session)
+    if 'user_id' not in session or 'username' not in session:
         return redirect(url_for('login'))
     all_ideas = Idea.query.all()
     return render_template('index.html', ideas=all_ideas)
@@ -45,7 +48,7 @@ def signup():
             flash('Пользователь с таким именем уже существует')
             return redirect(url_for('signup'))
 
-        hashed_password = generate_password_hash(password, method='sha256')
+        hashed_password = generate_password_hash(password, method='scrypt')
         new_user = User(username=username, password=hashed_password)
 
         db.session.add(new_user)
@@ -78,6 +81,7 @@ def login():
 
 @app.route('/logout')
 def logout():
+    session.pop('user_id', None)
     session.pop('username', None)
     return redirect(url_for('login'))
 
@@ -105,7 +109,7 @@ def delete_idea(id):
     if 'username' not in session:
         return jsonify({'error': 'Unauthorized'}), 403
 
-    idea = Idea.query.get(id)
+    idea = db.session.get(Idea, id)
     if idea and idea.username == session['username']:
         db.session.delete(idea)
         db.session.commit()
@@ -114,5 +118,14 @@ def delete_idea(id):
         return jsonify({'error': 'Idea not found or unauthorized'}), 404
 
 
+@app.route('/get-username', methods=['GET'])
+def get_username():
+    username = session['username']
+    if username:
+        return jsonify({'username': username})
+    else:
+        return jsonify({'error': 'User not logged in'}), 401
+
+
 if __name__ == '__main__':
-    app.run(debug=True, port=5252)
+    app.run(debug=False, port=5252)

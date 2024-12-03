@@ -2,12 +2,15 @@ const input = document.getElementById('inputIdea');
 const createBtn = document.getElementById('create');
 const errorCheck = document.getElementById('errorCheck');
 const serviceGrid = document.querySelector('.service-grid');
+const tempId = 10000;
 
 create.addEventListener('click', async () => {
             const ideaText = input.value;
 
             if (!ideaText.trim()) {
-                alert('Please enter your idea!');
+                return;
+            }
+            if(ideaText.length < 20){
                 return;
             }
 
@@ -23,42 +26,9 @@ create.addEventListener('click', async () => {
                 const result = await response.json();
             } catch (error) {
                 console.error('Error submitting idea:', error);
-                alert('An error occurred while submitting your idea.');
             }
         });
-        
-        serviceGrid.onclick = function (event) {
-          const clickedElement = event.target;
-        
-          if (clickedElement.classList.contains('service-text-tag')) {
-            const cardToRemove = clickedElement.closest('.service-card');
-            if (cardToRemove) {
-                const cardId = cardToRemove.id; 
-        
-                fetch('/delete_idea/${cardId}', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                })
-                .then(response => response.json())
-                .then(data => {
-                  if (data.message) {
-                    alert(data.message);
-                    cardToRemove.remove();
-                  } else {
-                    alert(data.error);
-                  }
-                })
-                .catch(error => {
-                  console.error('Error deleting idea:', error);
-                  alert('An error occurred while deleting your idea.');
-                });
-              } else {
-                alert('You cannot delete this idea.');
-              }
-            }
-          };      
+
 
 function addCard() {
   const inputValue = input.value.trim();
@@ -66,7 +36,7 @@ function addCard() {
 
   if (inputValue.length < 20) {
     error = "Пожалуйста, опишите вашу идею более подробнее";
-  } else if (inputValue.length > 150) {
+  } else if (inputValue.length > 1000) {
     error = "Пожалуйста, опишите вашу идею менее подробнее";
   }
 
@@ -84,14 +54,16 @@ createBtn.onclick = function (event) {
   addCard();
 };
 
-input.addEventListener('keydown', function (event) {
-  if (event.key === 'Enter') {
-    event.preventDefault(); 
-    addCard(); 
-  }
-});
-
 function addCardToGrid(title){
+    const username = sessionStorage.getItem('username');
+          if(username == null){
+                fetch('/get-username')
+                 .then(response => response.json())
+                .then(data => {
+                 sessionStorage.setItem('username', data.username)
+                     })
+                 .catch(error => console.error('Error:', error));
+          }
   const newCard = document.createElement('div');
   newCard.classList.add('service-card', 'w-inline-block');
   newCard.innerHTML = `
@@ -101,21 +73,76 @@ function addCardToGrid(title){
         <div class="servce-tag">
           <div class="service-text-tag">Удалить</div>
         </div>
+        <div class="servce-tag">
+              <div class="service-text-tag">${username}</div>
+            </div>
       </div>
     </div>
   `;
 
   serviceGrid.appendChild(newCard);
+  location.reload();
 }
 
 serviceGrid.onclick = function (event) {
-  const clickedElement = event.target;
+          const username = sessionStorage.getItem('username');
+          if(username == null){
+                fetch('/get-username')
+                 .then(response => response.json())
+                .then(data => {
+                 sessionStorage.setItem('username', data.username)
+                     })
+                 .catch(error => console.error('Error:', error));
+          }
+          const clickedElement = event.target;
 
-  if (clickedElement.classList.contains('service-text-tag')) {
-    const cardToRemove = clickedElement.closest('.service-card');
-    if (cardToRemove) {
-      cardToRemove.remove();
-      // callback to delete with id
-    }
-  }
-};
+          if (clickedElement.classList.contains('service-text-tag')) {
+            const cardToRemove = clickedElement.closest('.service-card');
+            if (cardToRemove) {
+                const cardId = cardToRemove.id;
+                if (cardId){
+                const owner = clickedElement.parentElement.nextElementSibling;
+                if (owner){
+                const ownerName = owner.querySelector('.service-text-tag').textContent.trim();
+                    if (username === ownerName){
+                     errorCheck.innerHTML = "";
+                        fetch('/delete_idea/' + cardId, {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                      if (data.message) {
+                        cardToRemove.remove();
+                      }
+                    })
+                    .catch(error => {
+                    });
+                }
+                else{
+                errorCheck.innerHTML = "Вы не можете удалить идею " + ownerName;
+                  }
+                } else {errorCheck.innerHTML = "";
+                        fetch('/delete_idea/' + cardId, {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                      if (data.message) {
+                        cardToRemove.remove();
+                      }
+                    })
+                    .catch(error => {
+                    });}
+              } else {
+              cardToRemove.remove();
+              errorCheck.innerHTML = "";
+              }
+              }
+          }
+          };

@@ -9,7 +9,6 @@
     <meta name="keywords" content="веб-разработка, HTML, CSS, JavaScript, обучение">
     <meta name="msapplication-TileColor" content="#2d89ef">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index/style.css') }}">
-    <link rel="stylesheet" href="/css/index/index.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
@@ -79,9 +78,9 @@
     <div class="service-breadcrumbs-section">ProjectSphere</div>
     <h2 class="heading-pg">Поделитесь вашей идеей стартапа, которую вы хотите видеть реализованной.</h2>
     <p class="description-pg"></p>
-    
-    <h1 class="note-title" id="project">Ваши идеи</h1>
+
     <div class="note-section" id="inputContest">
+        <h1 class="note-title" id="project">Ваши идеи</h1>
       <input 
         type="text" 
         class="note-input" 
@@ -99,8 +98,8 @@
 <!--          <h1>Пользователь выбирает профессию или навыки, которые хочет освоить (например, Data Science, Frontend-разработка или изучение языка). Платформа создает интерактивную карту обучения с рекомендациями курсов, книг, практических заданий и этапами роста.</h1>-->
             <h1>{{ idea.idea_text }}</h1>
           <div class="service-tab-holder">
-            <div class="servce-tag" id="deleteCard">
-              <div class="service-text-tag">Удалить</div>
+            <div class="servce-tag">
+              <div class="service-text-tag" id="deleteCard">Удалить</div>
             </div>
             <div class="servce-tag">
               <div class="service-text-tag">{{ idea.username }}</div>
