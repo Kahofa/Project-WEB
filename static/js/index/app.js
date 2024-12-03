@@ -26,6 +26,39 @@ create.addEventListener('click', async () => {
                 alert('An error occurred while submitting your idea.');
             }
         });
+        
+        serviceGrid.onclick = function (event) {
+          const clickedElement = event.target;
+        
+          if (clickedElement.classList.contains('service-text-tag')) {
+            const cardToRemove = clickedElement.closest('.service-card');
+            if (cardToRemove) {
+                const cardId = cardToRemove.id; 
+        
+                fetch('/delete_idea/${cardId}', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                })
+                .then(response => response.json())
+                .then(data => {
+                  if (data.message) {
+                    alert(data.message);
+                    cardToRemove.remove();
+                  } else {
+                    alert(data.error);
+                  }
+                })
+                .catch(error => {
+                  console.error('Error deleting idea:', error);
+                  alert('An error occurred while deleting your idea.');
+                });
+              } else {
+                alert('You cannot delete this idea.');
+              }
+            }
+          };      
 
 function addCard() {
   const inputValue = input.value.trim();

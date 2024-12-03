@@ -9,6 +9,7 @@
     <meta name="keywords" content="веб-разработка, HTML, CSS, JavaScript, обучение">
     <meta name="msapplication-TileColor" content="#2d89ef">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index/style.css') }}">
+    <link rel="stylesheet" href="/css/index/index.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
@@ -24,19 +25,16 @@
     </div>
     <ul>
         <li>
-            <a href="">О компании</a>
+            <a href="#about">О компании</a>
         </li>
         <li>
-            <a href="">Проекты</a>
+            <a href="#project">Проекты</a>
         </li>
         <li>
-            <a href="">Партнеры</a>
+            <a href="#partners">Партнеры</a>
         </li>
         <li>
-            <a href="">ProjectSphere</a>
-        </li>
-        <li>
-            <a href="" class="active">Обратная связь</a>
+            <a href="/logout" class="active">Выйти с аккаута</a>
         </li>
     </ul>
 </nav>
@@ -68,7 +66,7 @@
         <source src="{{ url_for('static', filename='images/background3.mp4') }}" type="video/mp4">
     </video>
     <div class="header-background-intro-text">
-        <h1>ProjectSphere</h1>
+        <h1 id="about">ProjectSphere</h1>
         <p>Платформа для тех, кто хочет предложить или найти идеи для IT-проектов. Пользователи могут делиться своими мыслями, голосовать за лучшие концепты и даже формировать команды для их реализации.</p>
         <div class="button">
         </div>
@@ -82,7 +80,7 @@
     <h2 class="heading-pg">Поделитесь вашей идеей стартапа, которую вы хотите видеть реализованной.</h2>
     <p class="description-pg"></p>
     
-    <h1 class="note-title">Ваши идеи</h1>
+    <h1 class="note-title" id="project">Ваши идеи</h1>
     <div class="note-section" id="inputContest">
       <input 
         type="text" 
@@ -101,6 +99,9 @@
 <!--          <h1>Пользователь выбирает профессию или навыки, которые хочет освоить (например, Data Science, Frontend-разработка или изучение языка). Платформа создает интерактивную карту обучения с рекомендациями курсов, книг, практических заданий и этапами роста.</h1>-->
             <h1>{{ idea.idea_text }}</h1>
           <div class="service-tab-holder">
+            <div class="servce-tag" id="deleteCard">
+              <div class="service-text-tag">Удалить</div>
+            </div>
             <div class="servce-tag">
               <div class="service-text-tag">{{ idea.username }}</div>
             </div>
@@ -117,7 +118,7 @@
 <div class="basic-section" id="feedback">
   <div class="basic-container w-container">
     <div class="service-breadcrumbs-section">контактная информация ProjectSphere</div>
-    <h2 class="heading-pg">Свяжитесь с нами для получения консультации:</h2>
+    <h2 class="heading-pg" id="partners">Свяжитесь с нами для получения консультации:</h2>
     <p class="description-pg"></p>
     <div class="bg-data-container">
       <div class="data-container">
