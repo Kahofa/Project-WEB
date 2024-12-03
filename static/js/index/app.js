@@ -58,6 +58,7 @@ serviceGrid.onclick = function (event) {
     const cardToRemove = clickedElement.closest('.service-card');
     if (cardToRemove) {
       cardToRemove.remove();
+      // callback to delete with id
     }
   }
 };

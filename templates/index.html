@@ -8,19 +8,19 @@
     <meta name="description" content="Лучший сайт о веб-разработке, обучении и трендах технологий.">
     <meta name="keywords" content="веб-разработка, HTML, CSS, JavaScript, обучение">
     <meta name="msapplication-TileColor" content="#2d89ef">
-    <link rel="stylesheet" href="./css/index/index.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index/style.css') }}">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
 
 <header class="header">
   <div class="header-logo">
-    <img src="./image/iconMain.png">
+    <img src="{{ url_for('static', filename='images/iconMain.png') }}">
 </div>
 <input type="checkbox" id="nav_check" hidden>
 <nav>
     <div class="header-logo">
-        <img src="./image/iconMain.png">
+        <img src="{{ url_for('static', filename='images/iconMain.png') }}">
     </div>
     <ul>
         <li>
@@ -65,7 +65,7 @@
 
 <div class="header-background-intro">
     <video autoplay loop muted>
-        <source src="./image/background3.mp4" type="video/mp4">
+        <source src="{{ url_for('static', filename='images/background3.mp4') }}" type="video/mp4">
     </video>
     <div class="header-background-intro-text">
         <h1>ProjectSphere</h1>
@@ -93,48 +93,22 @@
       <button class="note-button" id="create">Добавить</button>
       <p id="errorCheck"></p>
       </div>
-
     <div class="w-layout-grid service-grid">
-      <div class="service-card w-inline-block">
+<!-- карточка див    -->
+    {% for idea in ideas %}
+      <div class="service-card w-inline-block" id="{{ idea.id }}">
         <div class="service-content">
-          <h1>Пользователь выбирает профессию или навыки, которые хочет освоить (например, Data Science, Frontend-разработка или изучение языка). Платформа создает интерактивную карту обучения с рекомендациями курсов, книг, практических заданий и этапами роста.</h1>
+<!--          <h1>Пользователь выбирает профессию или навыки, которые хочет освоить (например, Data Science, Frontend-разработка или изучение языка). Платформа создает интерактивную карту обучения с рекомендациями курсов, книг, практических заданий и этапами роста.</h1>-->
+            <h1>{{ idea.idea_text }}</h1>
           <div class="service-tab-holder">
             <div class="servce-tag">
-              <div class="service-text-tag">Удалить</div>
+              <div class="service-text-tag">{{ idea.username }}</div>
             </div>
           </div>
         </div>
       </div>
-      <div class="service-card w-inline-block">
-        <div class="service-content">
-          <h1>Приложение объединяет людей, которые хотят купить или обменяться домашними продуктами (овощи, мёд, выпечка). Карта показывает ближайших участников.</h1>
-          <div class="service-tab-holder">
-            <div class="servce-tag">
-              <div class="service-text-tag">Удалить</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="service-card w-inline-block">
-        <div class="service-content">
-          <h1>Сервис позволяет отправлять пароли, коды или другие конфиденциальные данные через зашифрованные ссылки с автоматическим удалением после просмотра или истечением времени.</h1>
-          <div class="service-tab-holder">
-            <div class="servce-tag">
-              <div class="service-text-tag">Удалить</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="service-card w-inline-block">
-        <div class="service-content">
-          <h1>Платформа объединяет дизайнеров, копирайтеров и других творческих профессионалов. Пользователи могут создавать проекты, предлагать идеи и искать соавторов. Встроенные инструменты позволяют делать мудборды, голосовать за идеи и организовывать задания.</h1>
-          <div class="service-tab-holder">
-            <div class="servce-tag">
-              <div class="service-text-tag">Удалить</div>
-            </div>
-          </div>
-        </div>
-      </div>
+    {% endfor %}
+<!-- карточка див    -->
     </div>
   </div>
 </div>
@@ -187,6 +161,6 @@
 
 
 </body>
-<script src="js/index/app.js"></script>
-<script src="js/index/contact-open-icon.js"></script>
+<script src="{{ url_for('static', filename='js/index/app.js') }}"></script>
+<script src="{{ url_for('static', filename='js/index/contact-open-icon.js') }}"></script>
 </html>
